@@ -19,10 +19,19 @@ class CategoriesController extends Controller
         // SELECT categories.* ,parents.name as parent_name
         // from categories
         // LEFT JOIN categories as parents ON parents.id = a.parent_id
-        $categories = Category::leftJoin('categories as parents','parents.id','=','categories.parent_id')
+        $categories = Category::with('parent')
+        /*leftJoin('categories as parents','parents.id','=','categories.parent_id')
             ->select([
                 'categories.*',
                 'parents.name as parent_name'
+            ])*/
+            // ->select('categories.*')
+            // ->selectRaw('(SELECT COUNT(*) FROM products WHERE category_id = categories.id AND status = 'active') as product_count')
+            //->withCount('products')  >> return no of records in this relation as products_count
+            ->withCount([
+                'products'=> function($query){
+                    $query->where('status','=','active');
+                }
             ])
             ->filter($request->query())
             ->orderBy('categories.name','DESC')
@@ -66,9 +75,9 @@ class CategoriesController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Category $category)
     {
-        //
+        return view('dashboard.categories.show' ,compact('category'));
     }
 
     /**

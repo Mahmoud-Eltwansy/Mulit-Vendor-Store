@@ -174,13 +174,13 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <!-- Sidebar -->
         <div class="sidebar">
             <!-- Sidebar user panel (optional) -->
-            @auth()
+            @auth
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="image">
                     <img src="{{asset('dist/img/user2-160x160.jpg')}}" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">{{Auth::user()->name}}</a>
+                    <a href="{{ route('dashboard.profile.edit') }}" class="d-block">{{Auth::user()->name}}</a>
                     <form method="post" action="{{route('logout')}}">
                         @csrf
                         <button type="submit" class="btn btn-sm btn-outline-primary">Logout</button>

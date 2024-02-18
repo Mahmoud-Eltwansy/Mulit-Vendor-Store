@@ -45,4 +45,21 @@ class Category extends Model
             'status' => 'in:active,archived'
         ];
     }
+
+    public function products()
+    {
+        return $this->hasMany(Product::class,'category_id','id');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Category::class,'parent_id','id')->withDefault([
+            'name'=> '-'
+        ]);
+        // withDefault : Used in case there is a propability a foriegn key return null
+    }
+    public function children()
+    {
+        return $this->hasMany(Category::class,'parent_id','id');
+    }
 }

@@ -20,12 +20,25 @@ class UserSeeder extends Seeder
             'email'=>'mahmoudtwansy1999@gmail.com',
             'password'=>Hash::make('password'),
             'phone_no'=>'01010101010'
-        ]);
+            ]
+        );
         DB::table('users')->insert([
             'name'=>'System Admin',
             'email'=>'sysadmin@gmail.com',
             'password'=>Hash::make('password'),
             'phone_no'=>'01010101011'
+        ]);
+        DB::table('users')->insert([
+            'name'=>'Ahmed Ali',
+            'email'=>'ahmedali@gmail.com',
+            'password'=>Hash::make('password'),
+            'phone_no'=>'0101101011'
+        ]);
+        DB::table('users')->insert([
+            'name'=>'Mohamed Ahmed',
+            'email'=>'mohamed2001@gmail.com',
+            'password'=>Hash::make('password'),
+            'phone_no'=>'0101301011'
         ]);
     }
 }

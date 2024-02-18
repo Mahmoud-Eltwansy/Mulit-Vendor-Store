@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\DashboardController;
+use App\Http\Controllers\Dashboard\ProductsController;
+use App\Http\Controllers\Dashboard\ProfileController;
+use App\Models\Profile;
 use Illuminate\Support\Facades\Route;
 
 
@@ -22,9 +25,13 @@ Route::group([
 
 
     Route::get('/', [DashboardController::class, 'index'])
-        ->middleware(['verified'])
         ->name('dashboard');
 
     Route::resource('/categories', CategoriesController::class);
+    Route::resource('/products', ProductsController::class);
+
+    Route::get('profile',[ProfileController::class,'edit'])->name('profile.edit');
+    Route::patch('profile',[ProfileController::class,'update'])->name('profile.update');
+
 });
 
