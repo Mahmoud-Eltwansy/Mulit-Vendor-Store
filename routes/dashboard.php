@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group([
-    'middleware' => ['auth'],
+    'middleware' => ['auth','auth.type:admin,super-admin'],
     'as'=>'dashboard.',  // this closure mean that all routes names will be started with dashboard.
     'prefix'=>'dashboard' // this closure mean that all routes will be started by dashboard , / >> /dashboard
 
