@@ -15,11 +15,8 @@ class ProductsController extends Controller
      * Display a listing of the resource.
      */
     public function index(){
-        // Where Condition is implemented inside product modelas a global scope
+        // Where Condition is implemented inside product model as a global scope
 
-        //SELECT * FR0M products;
-        //SELECT * FROM stores WHERE id IN (..);
-        //SELECT * FROM categories WHERE id IN (..);
         // With >> Eager Loading
         $products=Product::with(['store','category'])->paginate();
 

@@ -5,14 +5,14 @@ use NumberFormatter;
 
 class Currency
 {
-    public static function format($amount,$currency=null)
+    public static function format($amount,$currencyType=null)
     {
         $formatter= new NumberFormatter(config('app.locale'),NumberFormatter::CURRENCY);
-        if($currency === null)
+        if($currencyType === null)
         {
-            $currency = config('app.currency','EGP');
+            $currencyType = config('app.currency','EGP');
         }
-        return $formatter->formatCurrency($amount,$currency);
+        return $formatter->formatCurrency($amount,$currencyType);
     }
 
 }

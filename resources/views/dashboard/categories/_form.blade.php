@@ -26,7 +26,7 @@
     <x-form.label>Status</x-form.label>
     <div>
         <x-form.radio name="status" :checked="$category->status"
-                      :options="['active'=>'Active', 'archived'=>'Archived']"/>
+                    :options="['active'=>'Active', 'archived'=>'Archived']"/>
     </div>
 </div>
 @error('status')
