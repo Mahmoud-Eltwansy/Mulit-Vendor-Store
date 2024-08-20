@@ -8,50 +8,53 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+
+
 class CartModelRepository implements CartRepository
 {
     protected $items;
 
     public function __construct()
     {
-        $this->items=collect([]);
+        $this->items = collect([]);
     }
-    public function get() : Collection
+    public function get(): Collection
     {
         // In each time I call this get method , all the products in the cart will be called from DB , So doing this approach gurantee that if I call
         // these products previously , Don't call them again
-        if(!$this->items->count()){
-            $this->items=Cart::with('product')->get();
+        if (!$this->items->count()) {
+            $this->items = Cart::with('product')->get();
         }
         return $this->items;
     }
 
     public function add(Product $product, $quantity = 1)
     {
-        $item = Cart::where('product_id','=',$product->id)->first();
-            if(!$item)
-            {
-                return Cart::create([
-                    'user_id'=>Auth::id(),
-                    'product_id'=>$product->id,
-                    'quantity'=>$quantity,
-                ]);
-            }
-            $item->increment('quantity',$quantity);
+        $item = Cart::where('product_id', '=', $product->id)->first();
+        if (!$item) {
+            $cart = Cart::create([
+                'user_id' => Auth::id(),
+                'product_id' => $product->id,
+                'quantity' => $quantity,
+            ]);
+            $this->get()->push($cart);
+            return $cart;
+        }
+        return $item->increment('quantity', $quantity);
     }
 
     public function update($id, $quantity)
     {
-        Cart::where('id','=',$id)
+        Cart::where('id', '=', $id)
             ->update([
-                'quantity'=>$quantity
+                'quantity' => $quantity
             ]);
     }
 
     public function delete(string $id)
     {
-        Cart::where('id','=',$id)
-        ->delete();
+        Cart::where('id', '=', $id)
+            ->delete();
     }
 
     public function empty()
@@ -61,13 +64,11 @@ class CartModelRepository implements CartRepository
 
     public function total(): float
     {
-    //     return (float)Cart::join('products','products.id','=','carts.product_id',)
-    //                 ->selectRaw('SUM(products.price * carts.quantity) as total')
-    //                 ->value('total');
-        return $this->get()->sum(function($item){
+        //     return (float)Cart::join('products','products.id','=','carts.product_id',)
+        //                 ->selectRaw('SUM(products.price * carts.quantity) as total')
+        //                 ->value('total');
+        return $this->get()->sum(function ($item) {
             return $item->quantity * $item->product->price;
         });
     }
-
-
 }

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('carts', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $table->id();
             $table->uuid('cookie_id');
             $table->foreignId('product_id')
             ->constrained('products')
@@ -24,6 +24,8 @@ return new class extends Migration
             $table->unsignedSmallInteger('quantity')->default(1);
             $table->json('options')->nullable();
             $table->timestamps();
+
+            $table->unique(['cookie_id', 'product_id']); // avoid duplicates of the two columns together
         });
     }
 

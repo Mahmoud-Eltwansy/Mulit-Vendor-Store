@@ -20,7 +20,7 @@ class CategoriesController extends Controller
         // from categories
         // LEFT JOIN categories as parents ON parents.id = a.parent_id
         $categories = Category::with('parent')
-        /*leftJoin('categories as parents','parents.id','=','categories.parent_id')
+            /*leftJoin('categories as parents','parents.id','=','categories.parent_id')
             ->select([
                 'categories.*',
                 'parents.name as parent_name'
@@ -29,12 +29,12 @@ class CategoriesController extends Controller
             // ->selectRaw('(SELECT COUNT(*) FROM products WHERE category_id = categories.id AND status = 'active') as product_count')
             //->withCount('products')  >> return no of records in this relation as products_count
             ->withCount([
-                'products'=> function($query){
-                    $query->where('status','=','active');
+                'products' => function ($query) {
+                    $query->where('status', '=', 'active');
                 }
             ])
             ->filter($request->query())
-            ->orderBy('categories.name','DESC')
+            ->orderBy('categories.name', 'DESC')
             ->paginate();
         return view('dashboard.categories.index', [
             'categories' => $categories
@@ -64,6 +64,7 @@ class CategoriesController extends Controller
         $request->merge([
             'slug' => Str::slug($request->post('name'))
         ]);
+
         $data = $request->except('image');
         $data['image'] = $this->uploadImage($request);
 
@@ -77,7 +78,7 @@ class CategoriesController extends Controller
      */
     public function show(Category $category)
     {
-        return view('dashboard.categories.show' ,compact('category'));
+        return view('dashboard.categories.show', compact('category'));
     }
 
     /**
@@ -153,32 +154,31 @@ class CategoriesController extends Controller
             'disk' => 'public'
         ]);
         return $path;
-
     }
 
     public function trash(): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\Foundation\Application
     {
-        $categories=Category::onlyTrashed()->paginate();
-        return view('dashboard.categories.trash',compact('categories'));
+        $categories = Category::onlyTrashed()->paginate();
+        return view('dashboard.categories.trash', compact('categories'));
     }
 
-    public function restore(Request $request,$id): \Illuminate\Http\RedirectResponse
+    public function restore(Request $request, $id): \Illuminate\Http\RedirectResponse
     {
-        $category= Category::onlyTrashed()->findOrFail($id);
+        $category = Category::onlyTrashed()->findOrFail($id);
         $category->restore();
 
         return redirect()->route('dashboard.categories.trash')
-            ->with('success','Restored Successfully');
+            ->with('success', 'Restored Successfully');
     }
 
     public function forceDelete($id): \Illuminate\Http\RedirectResponse
     {
-        $category= Category::onlyTrashed()->findOrFail($id);
+        $category = Category::onlyTrashed()->findOrFail($id);
         $category->forceDelete();
         if ($category->image) {
             Storage::disk('public')->delete($category->image);
         }
         return redirect()->route('dashboard.categories.trash')
-            ->with('success','Deleted Forever!');
+            ->with('success', 'Deleted Forever!');
     }
 }

@@ -24,6 +24,9 @@ class Cart extends Model
             $builder->where('cookie_id','=',Cart::getCookieId());
         });
         static::observe(CartObserver::class);
+        // static::creating(function(Cart $cart){
+        //     $cart->id=Str::uuid();
+        // });
     }
     public static function getCookieId()
     {

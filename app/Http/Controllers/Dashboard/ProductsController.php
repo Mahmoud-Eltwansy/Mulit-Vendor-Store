@@ -8,19 +8,21 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpKernel\Attribute\AsController;
 
 class ProductsController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(){
+    public function index()
+    {
         // Where Condition is implemented inside product model as a global scope
 
         // With >> Eager Loading
-        $products=Product::with(['store','category'])->paginate();
+        $products = Product::with(['store', 'category'])->paginate();
 
-        return view("dashboard.products.index",compact("products"));
+        return view("dashboard.products.index", compact("products"));
     }
 
     /**
@@ -52,9 +54,9 @@ class ProductsController extends Controller
      */
     public function edit(string $id)
     {
-        $product=Product::findOrFail($id);
-        $tags= implode(' , ',$product->tags()-> pluck('name')->toArray());
-        return view('dashboard.products.edit',compact('product','tags'));
+        $product = Product::findOrFail($id);
+        $tags = implode(' , ', $product->tags()->pluck('name')->toArray());
+        return view('dashboard.products.edit', compact('product', 'tags'));
     }
 
     /**
@@ -63,23 +65,23 @@ class ProductsController extends Controller
     public function update(Request $request, Product $product)
     {
         $product->update($request->except('tags'));
-        $tags= json_decode($request->post('tags'));
-        $tag_ids=[];
-        $saved_tags=Tag::all();
-        foreach($tags as $t_name){
-            $slug=Str::slug($t_name->value);
-            $tag=$saved_tags->where('slug',$slug)->first();
-            if(!$tag){
-                $tag=Tag::create([
-                    'slug'=>$slug,
-                    'name'=>$t_name->value,
+        $tags = json_decode($request->post('tags'));
+        $tag_ids = [];
+        $saved_tags = Tag::all();
+        foreach ($tags as $t_name) {
+            $slug = Str::slug($t_name->value);
+            $tag = $saved_tags->where('slug', $slug)->first();
+            if (!$tag) {
+                $tag = Tag::create([
+                    'slug' => $slug,
+                    'name' => $t_name->value,
                 ]);
             }
-            $tag_ids[]=$tag->id;
+            $tag_ids[] = $tag->id;
         }
         $product->tags()->sync($tag_ids);
         return redirect()->route('dashboard.products.index')
-            ->with('success','Product Updated Successfully!');
+            ->with('success', 'Product Updated Successfully!');
     }
 
     /**
