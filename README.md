@@ -39,7 +39,8 @@ Welcome to the Multi-Vendor Store repository! This project is designed to provid
    ```bash
     cp .env.example .env 
     php artisan key:generate
-5. Run migrations:
+5. Configure your database and other services in the .env file.
+6. Run migrations:
    ```bash
     php artisan migrate
 ## Usage
