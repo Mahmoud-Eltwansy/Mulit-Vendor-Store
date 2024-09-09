@@ -12,7 +12,7 @@ use Symfony\Component\Intl\Languages;
 class ProfileController extends Controller
 {
     public function edit(){
-        $user=Auth::user(); // return authintecated user
+        $user=Auth::user(); // return authintecated
         return view('dashboard.profile.edit',[
             'user'=>$user,
             'countries'=>Countries::getNames(),
@@ -37,7 +37,7 @@ class ProfileController extends Controller
         // can not use $profile,$profile->user_id in the condition because i added withDefault with profile relation ,
         // so if the user hasnot a profile ,
         // the relation will not return null, but return an empty object , so i can't check on $profile, or any foriegn key
-        // if($profile->first_name){ 
+        // if($profile->first_name){
         //     $profile->update( $request->all() );
         // }else{
         //     // $request->merge([

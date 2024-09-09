@@ -23,9 +23,12 @@ class DeductProductQuantity
      */
     public function handle(object $event): void
     {
-        $order = $event->order;
-        foreach ($order->products as $item) {
-            $item->decrement('quantity', $item->pivot->quantity);
+        try {
+            $order = $event->order;
+            foreach ($order->products as $item) {
+                $item->decrement('quantity', $item->pivot->quantity);
+            }
+        } catch (\Exception $e) {
         }
     }
 }

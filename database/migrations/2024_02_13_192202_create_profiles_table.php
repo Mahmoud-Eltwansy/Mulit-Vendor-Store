@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
             $table->char('country',2); // each country has a code from 2 char
-            $table->char('locale',2)->default('en'); // prefered language to render the site
+            $table->char('locale',3)->default('en'); // prefered language to render the site
             $table->timestamps();
 
             $table->primary('user_id'); // Note that the primary key now is user_id not id
