@@ -27,10 +27,10 @@ Welcome to the Multi-Vendor Store repository! This project is designed to provid
 ## Installation
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/your-repo-name.git
+   git clone https://github.com/Mahmoud-Eltwansy/Multi-Vendor-Store.git
 2. Navigate to the project directory:
    ```bash
-    cd yousr-repo-name
+    cd your Multi-Vendor-Store
 3. Install dependencies:
    ```bash
     composer install
